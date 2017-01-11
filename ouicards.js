@@ -103,12 +103,12 @@
     var questionEl, answerEl;
 
     questionEl = document.createElement('p');
-    questionEl.innerHTML = rawQuestion.question;
+    questionEl.innerHTML = rawQuestion.question.replace(/\n/g, '<br>');
 
     answerEl = document.createElement('p');
     answerEl.innerHTML = rawQuestion.answer.replace(/\n/g, '<br>');
 
-    return {question: questionEl, answer: answerEl};
+    return {question: questionEl, answer: answerEl, rawAnswer: rawQuestion.answer};
   }
 
   function saveToLS() {
