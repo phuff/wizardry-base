@@ -92,6 +92,7 @@ function loadSets(){
                                            });
     }
 
+  
 
   function changeQuestion() {
     var newQuestion = ouicards.next();
@@ -104,6 +105,10 @@ function loadSets(){
     $('.question').html(newQuestion.question);
     $('.answer-display').hide();
     $('#answer-input').val('');
+    setTimeout(function() { 
+                   $('#answer-input').focus();
+                   console.log("I set the focus");
+               }, 0);
     $('.answer-form').show();
     $('#answer-submit').unbind().click(function() {
                                            if (newQuestion.rawAnswer.toLowerCase() == $('#answer-input').val().toLowerCase()) {
@@ -133,7 +138,14 @@ function initializeHandlers() {
 
   updateFooter();
   changeQuestion();
-
+  $('body').keypress(function(event) { if(event.which == 13) {
+                                           if($('.answer-form').is(':visible')) {
+                                             $('#answer-submit').click();   
+                                           }
+                                           else if ($('.answer-display').is(':visible')) {
+                                               $('#next-question').click();
+                                           }
+                                       }});
   $('#load-questions').on('click', function() {
     initializeHandlers(ouicards.loadFromBrowser('#questions-input-area', ','));
     changeQuestion();
@@ -145,4 +157,6 @@ function initializeHandlers() {
     $('.answer-display').hide();
     start = true;
   });
+
+  
 }
