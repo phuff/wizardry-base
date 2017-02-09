@@ -111,7 +111,7 @@ function loadSets(){
                }, 0);
     $('.answer-form').show();
     $('#answer-submit').unbind().click(function() {
-                                           if (newQuestion.rawAnswer.toLowerCase() == $('#answer-input').val().toLowerCase()) {
+                                           if (newQuestion.rawAnswer.toLowerCase().trim() == $('#answer-input').val().toLowerCase().trim()) {
                                                showCorrect();
                                            }
                                            else {
