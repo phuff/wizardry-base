@@ -138,7 +138,7 @@ function initializeHandlers() {
 
   updateFooter();
   changeQuestion();
-  $('body').keypress(function(event) { if(event.which == 13) {
+  $('body').keyup(function(event) { if(event.which == 13) {
                                            if($('.answer-form').is(':visible')) {
                                              $('#answer-submit').click();   
                                            }
