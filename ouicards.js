@@ -106,8 +106,17 @@
     questionEl.innerHTML = rawQuestion.question.replace(/\n/g, '<br>');
 
     answerEl = document.createElement('p');
-    answerEl.innerHTML = rawQuestion.answer.replace(/\n/g, '<br>');
-
+    if (typeof rawQuestion.answer == "string") {
+        answerEl.innerHTML = rawQuestion.answer.replace(/\n/g, '<br>');
+    }
+    else if (typeof rawQuestion.answer == "object") {
+        var innerHtml = "<ul>";
+        for(var i in rawQuestion.answer.answers) {
+            innerHtml += "<li>" + rawQuestion.answer.answers[i] + "</li>\n";
+        }
+        innerHtml += "</ul>";
+        answerEl.innerHTML = innerHtml;
+    }
     return {question: questionEl, answer: answerEl, rawAnswer: rawQuestion.answer};
   }
 

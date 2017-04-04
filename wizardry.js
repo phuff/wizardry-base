@@ -92,35 +92,74 @@ function loadSets(){
                                            });
     }
 
-  
+  function checkAnswer(rawAnswer) {
+      if (typeof rawAnswer == "string") {
+          return rawAnswer.toLowerCase().trim() == $($('.answer-input')[0]).val().toLowerCase().trim();
+      }
+      if(typeof rawAnswer == "object") {
+          var lowerTrimmedRawAnswers = [];
+          for (var i in rawAnswer.answers) {
+              lowerTrimmedRawAnswers.push(rawAnswer.answers[i].toLowerCase().trim());
+          }
+          var lowerTrimmedUserAnswers = [];
+          for (i = 0; i < $('.answer-input').length; i++) {
+              lowerTrimmedUserAnswers.push($($('.answer-input')[i]).val().toLowerCase().trim());
+          }
+          var remainingAnswers = [];
+          for (i in lowerTrimmedUserAnswers) {
+              if(!lowerTrimmedRawAnswers.includes(lowerTrimmedUserAnswers[i])) {
+                  remainingAnswers.push(lowerTrimmedUserAnswers[i]);
+              }
+          }
+          return remainingAnswers.length == 0;
+      }
+      return false;
+  }
 
   function changeQuestion() {
-    var newQuestion = ouicards.next();
-    
-    if (newQuestion === undefined) {
-      console.log('Trying to load an undefined question into the DOM.');
-      return;
-    }
+      var newQuestion = ouicards.next();
+      
+      if (newQuestion === undefined) {
+          console.log('Trying to load an undefined question into the DOM.');
+          return;
+      }
       console.log("Changing question to " + newQuestion.question);
-
-    $('.question').html(newQuestion.question);
-    $('.answer-display').hide();
-    $('#answer-input').val('');
-    setTimeout(function() { 
-                   $('#answer-input').focus();
-                   console.log("I set the focus");
-               }, 0);
-    $('.answer-form').show();
-    $('#answer-submit').unbind().click(function() {
-                                           if (newQuestion.rawAnswer.toLowerCase().trim() == $('#answer-input').val().toLowerCase().trim()) {
-                                               console.log('Answer matched, so showingCorrect');
-                                               showCorrect();
-                                           }
-                                           else {
-                                               console.log('Answer was wrong, so showingWrong');
-                                               showWrong(newQuestion.answer);
-                                           }
-                                       });
+      
+      $('.question').html(newQuestion.question);
+      $('.answer-display').hide();
+      if(typeof newQuestion.rawAnswer == "string") {
+          $('.answer-input-container').html('<input type="text" class="answer-input" />');
+      }
+      if(typeof newQuestion.rawAnswer == "object") {
+          var innerHtml = "";
+          var size = 1;
+          if(newQuestion.rawAnswer.type == "multi-part") {
+              size = newQuestion.rawAnswer.answers.length;
+          }
+          if (newQuestion.rawAnswer.type == "subset") {
+              size = newQuestion.rawAnswer.size;
+          }
+          console.log("Size: " + size);
+          for (var i = 0; i < size; i++) {
+              innerHtml += '<input type="text" class="answer-input" /><br />';              
+          }
+          $('.answer-input-container').html(innerHtml);
+      }
+      setTimeout(function() { 
+                     $($('.answer-input')[0]).focus();
+                     console.log("I set the focus");
+                 }, 0);
+      $('.answer-form').show();
+      $('#answer-submit').unbind().click(function() {
+                                             if (checkAnswer(newQuestion.rawAnswer)) {
+                                                 console.log('Answer matched, so showingCorrect');
+                                                 showCorrect();
+                                             }
+                                             else {
+                                                 console.log('Answer was wrong, so showingWrong');
+                                                 showWrong(newQuestion.answer);
+                                             }
+                                         });
   }
 
 
