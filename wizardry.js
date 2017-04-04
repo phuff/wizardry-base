@@ -101,6 +101,7 @@ function loadSets(){
       console.log('Trying to load an undefined question into the DOM.');
       return;
     }
+      console.log("Changing question to " + newQuestion.question);
 
     $('.question').html(newQuestion.question);
     $('.answer-display').hide();
@@ -112,9 +113,11 @@ function loadSets(){
     $('.answer-form').show();
     $('#answer-submit').unbind().click(function() {
                                            if (newQuestion.rawAnswer.toLowerCase().trim() == $('#answer-input').val().toLowerCase().trim()) {
+                                               console.log('Answer matched, so showingCorrect');
                                                showCorrect();
                                            }
                                            else {
+                                               console.log('Answer was wrong, so showingWrong');
                                                showWrong(newQuestion.answer);
                                            }
                                        });
@@ -140,9 +143,11 @@ function initializeHandlers() {
   changeQuestion();
   $('body').keyup(function(event) { if(event.which == 13) {
                                            if($('.answer-form').is(':visible')) {
+                                               console.log('.answer-form was visible so I answer-submited');
                                              $('#answer-submit').click();   
                                            }
                                            else if ($('.answer-display').is(':visible')) {
+                                               console.log('answer-display was visible so I next-question-ed');
                                                $('#next-question').click();
                                            }
                                        }});
