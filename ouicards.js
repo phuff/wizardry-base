@@ -103,7 +103,9 @@
     var questionEl, answerEl;
 
     questionEl = document.createElement('p');
-    questionEl.innerHTML = rawQuestion.question.replace(/\n/g, '<br>');
+    if (typeof rawQuestion.question == "string") {
+        questionEl.innerHTML = rawQuestion.question.replace(/\n/g, '<br>');
+    }
 
     answerEl = document.createElement('p');
     if (typeof rawQuestion.answer == "string") {
@@ -117,7 +119,7 @@
         innerHtml += "</ul>";
         answerEl.innerHTML = innerHtml;
     }
-    return {question: questionEl, answer: answerEl, rawAnswer: rawQuestion.answer};
+    return {question: questionEl, rawQuestion: rawQuestion.question, answer: answerEl, rawAnswer: rawQuestion.answer};
   }
 
   function saveToLS() {

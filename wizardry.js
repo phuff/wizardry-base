@@ -116,6 +116,25 @@ function loadSets(){
       return false;
   }
 
+  function renderQuestion(question) {
+      console.log("I'm rendering the question");
+      console.log(question);
+      if (typeof question.rawQuestion == "string") {
+          $('.question').html(question.question);
+      }
+      if (typeof question.rawQuestion == "object") {
+          console.log("It's an object");
+          console.log(question.rawQuestion);
+          if ('container' in question.rawQuestion) {
+              $('.question').html(question.rawQuestion.container);
+          }
+          if ('render' in question.rawQuestion && typeof question.rawQuestion.render == 'function') {
+              console.log("I'm about to render");
+              question.rawQuestion.render();
+          }
+      }
+  }
+
   function changeQuestion() {
       var newQuestion = ouicards.next();
       
@@ -125,7 +144,7 @@ function loadSets(){
       }
       console.log("Changing question to " + newQuestion.question);
       
-      $('.question').html(newQuestion.question);
+      renderQuestion(newQuestion);
       $('.answer-display').hide();
       if(typeof newQuestion.rawAnswer == "string") {
           $('.answer-input-container').html('<input type="text" class="answer-input" />');
