@@ -196,6 +196,7 @@ function initializeHandlers() {
   $('.wrong').unbind();
   $('.question').unbind();
   $('.answer').unbind();
+  $('body').unbind();
 
   updateFooter();
   changeQuestion();
